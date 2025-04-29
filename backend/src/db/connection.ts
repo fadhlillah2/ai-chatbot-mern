@@ -1,19 +1,30 @@
 import { connect, disconnect } from "mongoose";
+
 async function connectToDatabase() {
   try {
-    await connect(process.env.MONGODB_URL);
+    const mongoUrl = process.env.MONGODB_URL;
+    
+    if (!mongoUrl) {
+      throw new Error("MONGODB_URL is not defined in environment variables");
+    }
+    
+    console.log("Connecting to MongoDB...");
+    await connect(mongoUrl);
+    console.log("Connected to MongoDB successfully!");
   } catch (error) {
-    console.log(error);
-    throw new Error("Could not Connect To MongoDB");
+    console.error("MongoDB Connection Error:", error);
+    throw new Error("Could not connect to MongoDB. Please check your connection string and network.");
   }
 }
 
 async function disconnectFromDatabase() {
   try {
+    console.log("Disconnecting from MongoDB...");
     await disconnect();
+    console.log("Disconnected from MongoDB successfully!");
   } catch (error) {
-    console.log(error);
-    throw new Error("Could not Disconnect From MongoDB");
+    console.error("MongoDB Disconnection Error:", error);
+    throw new Error("Could not disconnect from MongoDB");
   }
 }
 

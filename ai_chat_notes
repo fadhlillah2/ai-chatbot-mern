@@ -137,4 +137,115 @@ Jika Anda mengalami error 429 "Too Many Requests", itu berarti Anda telah mencap
    - Pertimbangkan menggunakan model open-source yang di-host sendiri
    - Gunakan layanan AI alternatif seperti Anthropic, Cohere, atau Hugging Face
 
-Jika Anda mengalami masalah dengan API OpenAI, aplikasi akan tetap berfungsi dengan menggunakan respon fallback, meskipun dengan kemampuan yang terbatas. 
+Jika Anda mengalami masalah dengan API OpenAI, aplikasi akan tetap berfungsi dengan menggunakan respon fallback, meskipun dengan kemampuan yang terbatas.
+
+## 6. Menggunakan Model Open Source sebagai Alternatif
+
+Aplikasi telah dimodifikasi untuk mendukung model AI open-source yang dihosting sendiri sebagai alternatif OpenAI.
+
+### Model yang Didukung
+
+1. **OpenAI GPT-3.5 Turbo**: Model default (memerlukan API key).
+2. **Mistral AI**: Model open-source berkualitas tinggi (memerlukan API key Mistral).
+3. **Local LLM via Ollama**: Model yang dijalankan secara lokal di komputer Anda sendiri.
+4. **Fallback**: Model statis untuk penggunaan saat tidak ada API yang tersedia.
+
+### Konfigurasi Model Alternatif
+
+1. **Edit file .env di direktori backend**:
+
+```bash
+nano backend/.env
+```
+
+2. **Tambahkan konfigurasi baru berikut**:
+
+```
+# Konfigurasi Model AI - pilih salah satu: "openai", "mistral", "local-llm", atau "fallback"
+LLM_MODEL=openai
+
+# Konfigurasi Mistral AI (opsional)
+MISTRAL_API_KEY=your_mistral_api_key_here
+
+# Konfigurasi untuk model lokal (opsional)
+LOCAL_LLM_ENDPOINT=http://localhost:11434
+LOCAL_LLM_MODEL=mistral
+```
+
+3. **Pilih model yang ingin digunakan** dengan mengubah nilai `LLM_MODEL` menjadi salah satu:
+   - `openai`: Menggunakan OpenAI API (default)
+   - `mistral`: Menggunakan Mistral AI API
+   - `local-llm`: Menggunakan model yang dijalankan secara lokal melalui Ollama
+   - `fallback`: Menggunakan respons statis tanpa API eksternal
+
+### Mengatur Mistral AI
+
+1. **Daftar untuk mendapatkan API key Mistral**:
+   - Kunjungi [console.mistral.ai](https://console.mistral.ai)
+   - Buat akun dan dapatkan API key gratis
+   - Tambahkan API key ke file `.env` di variabel `MISTRAL_API_KEY`
+
+2. **Restart server backend**:
+   ```bash
+   pkill -f node
+   cd backend && npm run dev
+   ```
+
+### Menggunakan Model Lokal dengan Ollama
+
+1. **Instal Ollama**:
+
+   macOS:
+   ```bash
+   curl -fsSL https://ollama.ai/install.sh | sh
+   ```
+
+   Linux:
+   ```bash
+   curl -fsSL https://ollama.ai/install.sh | sh
+   ```
+
+   Windows: Unduh dari [ollama.ai](https://ollama.ai)
+
+2. **Download model yang diinginkan**:
+   ```bash
+   ollama pull mistral
+   ```
+
+3. **Jalankan server Ollama**:
+   ```bash
+   ollama serve
+   ```
+
+4. **Konfigurasi aplikasi untuk menggunakan model lokal**:
+   - Edit file `.env` dan ubah `LLM_MODEL=local-llm`
+   - Pastikan `LOCAL_LLM_ENDPOINT` menunjuk ke alamat server Ollama
+   - Pastikan `LOCAL_LLM_MODEL` cocok dengan model yang Anda download
+
+5. **Restart server backend**
+
+### Kelebihan dan Kekurangan Masing-masing Model
+
+1. **OpenAI GPT-3.5 Turbo**:
+   - ✅ Kualitas respons terbaik
+   - ✅ Dapat menjawab beragam topik
+   - ❌ Memerlukan API key berbayar
+   - ❌ Memiliki batasan rate limit
+
+2. **Mistral AI**:
+   - ✅ Kualitas respons yang baik
+   - ✅ Mendukung berbagai bahasa
+   - ✅ API key gratis tersedia
+   - ❌ Batasan pada akun gratis
+
+3. **Local LLM (Ollama)**:
+   - ✅ Tidak ada biaya penggunaan
+   - ✅ Tidak ada rate limit
+   - ✅ Privasi data terjaga
+   - ❌ Memerlukan hardware yang memadai (minimal 8GB RAM, lebih baik dengan GPU)
+   - ❌ Kualitas respons tergantung model yang digunakan
+
+4. **Fallback**:
+   - ✅ Selalu tersedia tanpa API
+   - ✅ Sangat cepat
+   - ❌ Sangat terbatas, hanya respons statis 

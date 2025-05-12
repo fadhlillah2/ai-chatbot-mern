@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import User from "../models/User.js";
 import { configureOpenAI } from "../config/openai-config.js";
 import { OpenAIApi, ChatCompletionRequestMessage } from "openai";
+import { SupportedLLM, createLLMProvider } from "../config/llm-alternatives.js";
 
 // Helper function for delay
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -27,6 +28,19 @@ const getFallbackResponse = (message: string) => {
   return "I'm sorry, but the OpenAI API is currently unavailable due to rate limiting. Please try again later. This is a fallback response.";
 };
 
+// Mendapatkan model yang akan digunakan berdasarkan konfigurasi
+const getLLMModel = (): SupportedLLM => {
+  const configuredModel = process.env.LLM_MODEL as SupportedLLM;
+  const validModels: SupportedLLM[] = ["openai", "mistral", "local-llm", "fallback"];
+  
+  if (configuredModel && validModels.includes(configuredModel)) {
+    return configuredModel;
+  }
+  
+  // Default ke OpenAI jika tidak ada konfigurasi yang valid
+  return "openai";
+};
+
 export const generateChatCompletion = async (
   req: Request,
   res: Response,
@@ -47,78 +61,89 @@ export const generateChatCompletion = async (
     chats.push({ content: message, role: "user" });
     user.chats.push({ content: message, role: "user" });
 
-    // send all chats with new one to openAI API
-    const config = configureOpenAI();
-    const openai = new OpenAIApi(config);
+    // Tentukan model yang akan digunakan
+    const modelType = getLLMModel();
+    let responseContent: string;
     
-    // Add retry mechanism with exponential backoff
-    let retries = 0;
-    const maxRetries = 3;
-    let chatResponse;
-    
-    while (retries < maxRetries) {
+    if (modelType === "openai") {
+      // Gunakan OpenAI dengan retry mechanism
+      responseContent = await useOpenAIWithRetry(chats);
+    } else {
+      // Gunakan model alternatif
       try {
-        // Introducing a delay to avoid rate limiting
-        if (retries > 0) {
-          const delayTime = Math.pow(2, retries) * 1000; // Exponential backoff: 2s, 4s, 8s
-          console.log(`Retrying in ${delayTime}ms...`);
-          await sleep(delayTime);
-        }
-        
-        // get latest response
-        chatResponse = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
-          messages: chats,
-        });
-        
-        // If successful, break the loop
-        break;
+        const llmProvider = createLLMProvider(modelType);
+        responseContent = await llmProvider.generateResponse(chats);
       } catch (error) {
-        if (error.response && error.response.status === 429 && retries < maxRetries - 1) {
-          console.log(`Rate limit exceeded. Retry ${retries + 1}/${maxRetries}`);
-          retries++;
-        } else {
-          // If it's not a 429 error or we've exhausted retries, throw the error
-          throw error;
-        }
+        console.error(`Error using ${modelType} model:`, error);
+        // Fallback ke respons statis jika model alternatif gagal
+        responseContent = getFallbackResponse(message);
       }
     }
     
-    // If API call failed after all retries, use fallback
-    if (!chatResponse) {
-      console.log("Using fallback response mechanism");
-      const fallbackContent = getFallbackResponse(message);
-      const fallbackMessage = { role: "assistant", content: fallbackContent };
-      user.chats.push(fallbackMessage);
-      await user.save();
-      return res.status(200).json({ chats: user.chats });
-    }
-    
-    user.chats.push(chatResponse.data.choices[0].message);
+    // Simpan respons ke database
+    const assistantMessage = { role: "assistant", content: responseContent };
+    user.chats.push(assistantMessage);
     await user.save();
+    
     return res.status(200).json({ chats: user.chats });
   } catch (error) {
     console.log(error);
     
-    // Use fallback for 429 errors
-    if (error.response && error.response.status === 429) {
-      console.log("Rate limit error, using fallback response");
-      try {
-        const fallbackContent = getFallbackResponse(message);
-        const fallbackMessage = { role: "assistant", content: fallbackContent };
-        const user = await User.findById(res.locals.jwtData.id);
-        user.chats.push(fallbackMessage);
-        await user.save();
-        return res.status(200).json({ chats: user.chats });
-      } catch (saveError) {
-        console.log("Error saving fallback message:", saveError);
-        return res.status(500).json({ message: "Error saving fallback response" });
-      }
+    // Gunakan fallback untuk error apapun
+    try {
+      const fallbackContent = getFallbackResponse(message);
+      const fallbackMessage = { role: "assistant", content: fallbackContent };
+      const user = await User.findById(res.locals.jwtData.id);
+      user.chats.push(fallbackMessage);
+      await user.save();
+      return res.status(200).json({ chats: user.chats });
+    } catch (saveError) {
+      console.log("Error saving fallback message:", saveError);
+      return res.status(500).json({ message: "Error saving fallback response" });
     }
-    
-    return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+// Fungsi pembantu untuk menggunakan OpenAI dengan mekanisme retry
+async function useOpenAIWithRetry(chats: ChatCompletionRequestMessage[]): Promise<string> {
+  const config = configureOpenAI();
+  const openai = new OpenAIApi(config);
+  
+  // Add retry mechanism with exponential backoff
+  let retries = 0;
+  const maxRetries = 3;
+  
+  while (retries < maxRetries) {
+    try {
+      // Introducing a delay to avoid rate limiting
+      if (retries > 0) {
+        const delayTime = Math.pow(2, retries) * 1000; // Exponential backoff: 2s, 4s, 8s
+        console.log(`Retrying in ${delayTime}ms...`);
+        await sleep(delayTime);
+      }
+      
+      // get latest response
+      const chatResponse = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: chats,
+      });
+      
+      // Return the content if successful
+      return chatResponse.data.choices[0].message.content;
+    } catch (error) {
+      if (error.response && error.response.status === 429 && retries < maxRetries - 1) {
+        console.log(`Rate limit exceeded. Retry ${retries + 1}/${maxRetries}`);
+        retries++;
+      } else {
+        // If it's not a 429 error or we've exhausted retries, throw the error
+        throw error;
+      }
+    }
+  }
+  
+  // If we've exhausted all retries, throw an error
+  throw new Error("Failed to get response from OpenAI after multiple retries");
+}
 
 export const sendChatsToUser = async (
   req: Request,

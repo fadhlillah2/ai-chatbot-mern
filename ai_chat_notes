@@ -1,0 +1,140 @@
+# Catatan Menjalankan Proyek MERN AI ChatBot
+
+## 1. Menjalankan Server Backend
+
+```bash
+# Masuk ke direktori backend
+cd backend
+
+# Jalankan server backend
+npm run dev
+```
+
+Server backend akan berjalan di port 5000. Tunggu sampai muncul pesan:
+```
+Connecting to MongoDB...
+Connected to MongoDB successfully!
+Server running on port 5000 🚀
+API available at http://localhost:5000/api/v1
+```
+
+**Catatan Penting:**
+- Jika terjadi error `EADDRINUSE: address already in use :::5000`, berarti port 5000 sudah digunakan oleh aplikasi lain. Matikan aplikasi tersebut atau gunakan port lain dengan mengubah file `.env`.
+- Pastikan MongoDB Docker container berjalan dengan perintah `docker ps | grep mongo`.
+- Jika terdapat banyak proses `nodemon` yang berjalan bersamaan, matikan semua dulu dengan perintah `pkill -f node` dan jalankan ulang server.
+
+## 2. Menjalankan Aplikasi Frontend
+
+```bash
+# Masuk ke direktori frontend
+cd frontend
+
+# Jalankan aplikasi frontend
+npm run dev
+```
+
+Frontend akan berjalan di port 5173. Tunggu sampai muncul pesan:
+```
+VITE v4.5.13  ready in 387 ms
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+➜  press h to show help
+```
+
+## 3. Mendaftarkan User Baru
+
+### Cara 1: Melalui API (Command Line)
+
+```bash
+# Mendaftarkan user baru menggunakan curl
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"Password123"}' \
+  http://localhost:5000/api/v1/user/signup
+```
+
+Jika berhasil, Anda akan menerima respons seperti:
+```json
+{"message":"OK","name":"John Doe","email":"john@example.com"}
+```
+
+### Cara 2: Melalui Aplikasi Web
+
+1. Buka browser dan akses `http://localhost:5173/`
+2. Klik tombol "Signup" atau buka halaman `http://localhost:5173/signup`
+3. Isi formulir dengan informasi:
+   - Nama: (isi nama Anda)
+   - Email: (isi email Anda)
+   - Password: (isi password Anda, minimal 8 karakter)
+4. Klik tombol "Signup"
+
+## 4. Login dengan User yang Telah Dibuat
+
+### Kredensial login:
+- Email: john@example.com
+- Password: Password123
+
+Atau gunakan akun yang telah ada sebelumnya:
+- Email: test@example.com
+- Password: (password sebenarnya tidak diketahui karena tersimpan dalam bentuk hash)
+
+## 5. Informasi Tambahan dan Troubleshooting
+
+### Melihat Data yang Tersimpan di MongoDB
+```bash
+# Menampilkan semua database
+docker exec mongodb mongosh --eval "show dbs"
+
+# Melihat koleksi dalam database mern-ai-chatbot
+docker exec mongodb mongosh "mern-ai-chatbot" --eval "db.getCollectionNames()"
+
+# Menampilkan semua pengguna yang terdaftar
+docker exec mongodb mongosh "mern-ai-chatbot" --eval "db.users.find({}, {name: 1, email: 1, _id: 0}).toArray()"
+```
+
+### Masalah dengan OpenAI API
+Berdasarkan log error, aplikasi mengalami masalah saat mencoba mengakses OpenAI API dengan status 401 Unauthorized. Error ini terjadi karena:
+1. API key OpenAI belum dikonfigurasi dengan benar di file `.env`
+2. API key yang digunakan tidak valid atau telah kedaluwarsa
+
+Untuk memperbaikinya:
+```bash
+# Edit file .env dan masukkan API key OpenAI yang valid
+nano backend/.env
+```
+Ubah baris `OPENAI_API_KEY=your_openai_api_key_here` menjadi API key yang valid.
+
+Setelah mengubah API key, restart server backend untuk menerapkan perubahan.
+
+### Mengatasi Error 429 "Too Many Requests" dari OpenAI API
+
+Jika Anda mengalami error 429 "Too Many Requests", itu berarti Anda telah mencapai batas penggunaan API OpenAI. Error ini umumnya terjadi karena:
+
+1. **Rate Limiting**: OpenAI membatasi jumlah permintaan per menit/jam.
+2. **Kuota Habis**: Kredit gratis untuk akun baru telah habis.
+3. **Pembatasan Tier Gratis**: Akun free tier memiliki batasan yang ketat.
+
+#### Solusi yang Diimplementasikan:
+
+1. **Mekanisme Retry dengan Exponential Backoff**:
+   - Aplikasi akan mencoba ulang permintaan hingga 3 kali
+   - Setiap percobaan ulang akan menunggu lebih lama (2s, 4s, 8s)
+
+2. **Respon Fallback**:
+   - Jika semua percobaan ulang gagal, aplikasi akan memberikan respon fallback
+   - Respon fallback adalah teks statis yang menginformasikan pengguna tentang masalah
+
+#### Solusi Jangka Panjang:
+
+1. **Upgrade Akun OpenAI**:
+   - Berlangganan paket berbayar untuk mendapatkan kuota lebih tinggi
+
+2. **Optimasi Penggunaan**:
+   - Batasi panjang dan jumlah pesan yang dikirim
+   - Implementasikan caching untuk respon umum
+   - Batasi jumlah token yang digunakan
+
+3. **Alternatif OpenAI API**:
+   - Pertimbangkan menggunakan model open-source yang di-host sendiri
+   - Gunakan layanan AI alternatif seperti Anthropic, Cohere, atau Hugging Face
+
+Jika Anda mengalami masalah dengan API OpenAI, aplikasi akan tetap berfungsi dengan menggunakan respon fallback, meskipun dengan kemampuan yang terbatas. 

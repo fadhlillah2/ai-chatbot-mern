@@ -1,0 +1,31 @@
+{
+  "name": "mern-ai-chatbot",
+  "version": "1.0.0",
+  "description": "MERN Stack AI ChatBot with support for multiple LLM providers",
+  "main": "index.js",
+  "scripts": {
+    "start:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "restart:backend": "./restart.sh backend",
+    "restart:frontend": "./restart.sh frontend",
+    "restart:all": "./restart.sh",
+    "restart": "./restart.sh",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "build": "npm run build:backend && npm run build:frontend"
+  },
+  "keywords": [
+    "mern",
+    "ai",
+    "chatbot",
+    "openai",
+    "mistral",
+    "ollama"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

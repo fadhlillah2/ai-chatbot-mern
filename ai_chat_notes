@@ -185,10 +185,19 @@ LOCAL_LLM_MODEL=mistral
    - Buat akun dan dapatkan API key gratis
    - Tambahkan API key ke file `.env` di variabel `MISTRAL_API_KEY`
 
-2. **Restart server backend**:
+2. **Cara Merestart Server**:
+   
+   Dari root proyek:
    ```bash
-   pkill -f node
-   cd backend && npm run dev
+   # Restart semua server
+   ./restart.sh
+   
+   # Restart individual server
+   ./restart.sh backend    # Hanya restart backend
+   ./restart.sh frontend   # Hanya restart frontend
+   
+   # Menggunakan npm script
+   npm run restart         # Restart semua server
    ```
 
 ### Menggunakan Model Lokal dengan Ollama

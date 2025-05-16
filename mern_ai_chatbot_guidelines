@@ -1,0 +1,331 @@
+# MERN AI ChatBot Guidelines
+
+## 1. Project Overview
+
+The MERN AI ChatBot is a full-stack application built using the MERN stack (MongoDB, Express.js, React, Node.js) that enables users to interact with various AI language models. The application features user authentication, persistent chat history, and support for multiple AI providers including OpenAI, Mistral AI, and local models via Ollama.
+
+### Key Features
+- User authentication and session management
+- Real-time chat interface with AI language models
+- Multiple AI model integrations (OpenAI, Mistral, Local LLMs)
+- Persistent chat history storage
+- Fallback mechanisms for API failures
+- Rate limiting protection with automatic retries
+
+## 2. Architecture
+
+### Tech Stack
+- **Frontend**: React with TypeScript, Material UI
+- **Backend**: Node.js with Express and TypeScript
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT (JSON Web Tokens)
+- **AI Integration**: OpenAI API, Mistral AI API, Local LLM via Ollama
+
+### Project Structure
+```
+MERN-AI-ChatBot/
+├── frontend/            # React frontend application
+│   ├── src/
+│   │   ├── components/  # Reusable UI components
+│   │   ├── pages/       # Application pages
+│   │   ├── context/     # React context for state management
+│   │   ├── helpers/     # Utility functions and API calls
+│   │   └── App.tsx      # Main application component
+├── backend/             # Node.js backend application
+│   ├── src/
+│   │   ├── config/      # Configuration files
+│   │   ├── controllers/ # Request handlers
+│   │   ├── models/      # Database models
+│   │   ├── routes/      # API route definitions
+│   │   ├── utils/       # Utility functions
+│   │   ├── app.ts       # Express application setup
+│   │   └── index.ts     # Entry point
+```
+
+## 3. Setup and Installation
+
+### Prerequisites
+- Node.js (v14 or later)
+- MongoDB (local installation or Docker)
+- npm or yarn
+- Docker (optional, for MongoDB)
+
+### Backend Setup
+```bash
+# Clone repository
+git clone <repository-url>
+cd mern-ai-chatbot
+
+# Install backend dependencies
+cd backend
+npm install
+
+# Configure environment variables
+cp .env.example .env
+# Edit .env with your settings
+
+# Start the backend server
+npm run dev
+```
+
+### Frontend Setup
+```bash
+# From the project root
+cd frontend
+npm install
+
+# Start the frontend development server
+npm run dev
+```
+
+### MongoDB Setup
+```bash
+# Using Docker
+docker run --name mongodb -d -p 27017:27017 mongo
+```
+
+### Running the Application
+```bash
+# Start backend only
+npm run start:backend
+
+# Start frontend only
+npm run start:frontend
+
+# Start both backend and frontend concurrently
+npm run start
+
+# Restart servers - cara umum
+./restart.sh                # Restart kedua server (backend dan frontend)
+./restart.sh backend        # Restart hanya backend
+./restart.sh frontend       # Restart hanya frontend
+
+# Restart menggunakan npm scripts
+npm run restart             # Restart kedua server
+npm run restart:backend     # Restart hanya backend
+npm run restart:frontend    # Restart hanya frontend
+
+# Build both applications
+npm run build
+```
+
+## 4. Configuration Guide
+
+### Backend Environment Variables (.env)
+```
+PORT=5000
+MONGODB_URL=mongodb://localhost:27017/mern-ai-chatbot
+JWT_SECRET=your_jwt_secret_key_here
+COOKIE_SECRET=your_cookie_secret_key_here
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key
+
+# LLM Model Selection - choose one: "openai", "mistral", "local-llm", or "fallback"
+LLM_MODEL=openai
+
+# Mistral AI Configuration (optional)
+MISTRAL_API_KEY=your_mistral_api_key
+
+# Local LLM Configuration (optional)
+LOCAL_LLM_ENDPOINT=http://localhost:11434
+LOCAL_LLM_MODEL=mistral
+```
+
+### Frontend Environment Variables
+```
+VITE_API_ENDPOINT=http://localhost:5000/api/v1
+```
+
+## 5. User Authentication
+
+The application uses JWT (JSON Web Tokens) for authentication, stored in HTTP-only cookies.
+
+### Registration & Login Process
+1. User submits registration form (name, email, password)
+2. Backend validates the data, hashes the password, and saves to MongoDB
+3. Upon login, backend validates credentials and issues a JWT
+4. JWT is stored in an HTTP-only cookie with appropriate security settings
+5. Frontend retrieves authentication status using the `/auth-status` endpoint
+
+### Authentication API Endpoints
+- `POST /api/v1/user/signup` - Register new user
+- `POST /api/v1/user/login` - Authenticate user
+- `GET /api/v1/user/auth-status` - Check authentication status
+- `GET /api/v1/user/logout` - Logout user (clear cookie)
+
+## 6. AI Integration
+
+### Supported AI Models
+- **OpenAI (GPT-3.5 Turbo)**
+  - Premium commercial API with high-quality responses
+  - Requires API key with usage limits/costs
+  - Rate-limited on free tier
+
+- **Mistral AI**
+  - Alternative commercial API with good response quality
+  - Free tier available with reasonable limits
+  - Good multilingual support
+
+- **Local LLM via Ollama**
+  - Self-hosted models without API costs
+  - Requires adequate hardware (8GB+ RAM, better with GPU)
+  - No rate limits or usage restrictions
+  - Varying quality based on selected model
+
+- **Fallback Mode**
+  - Static responses when no API available
+  - Always available, no external dependencies
+  - Very limited functionality
+
+### Configuring AI Models
+To switch between AI models, edit the `LLM_MODEL` variable in the `.env` file:
+
+```
+# For OpenAI
+LLM_MODEL=openai
+OPENAI_API_KEY=your_openai_api_key
+
+# For Mistral
+LLM_MODEL=mistral
+MISTRAL_API_KEY=your_mistral_api_key
+
+# For Local LLM
+LLM_MODEL=local-llm
+LOCAL_LLM_ENDPOINT=http://localhost:11434
+LOCAL_LLM_MODEL=mistral
+
+# For Fallback only
+LLM_MODEL=fallback
+```
+
+## 7. Error Handling & Resilience
+
+The application implements several layers of error handling to ensure robustness:
+
+### OpenAI API Rate Limiting
+- Exponential backoff retry mechanism (2s, 4s, 8s delays)
+- Up to 3 retry attempts for 429 (Too Many Requests) errors
+- Automatic fallback to static responses after retry exhaustion
+
+### Alternative Model Switching
+- Ability to switch to alternative AI models when primary fails
+- Configuration-based model selection without code changes
+- Graceful error handling for all provider failures
+
+### Fallback Mechanism
+- Static responses when all AI providers fail
+- Context-aware responses based on user message content
+- Clear communication to users about fallback status
+
+## 8. Chat API Endpoints
+
+### Chat Management
+- `POST /api/v1/chat/new` - Send a new chat message to AI
+- `GET /api/v1/chat/all-chats` - Retrieve user's chat history
+- `DELETE /api/v1/chat/delete` - Delete all chat history for user
+
+### Request/Response Format
+```json
+// POST /api/v1/chat/new - Request
+{
+  "message": "Hello, how are you?"
+}
+
+// POST /api/v1/chat/new - Response
+{
+  "chats": [
+    {
+      "role": "user",
+      "content": "Hello, how are you?"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm doing well, thank you for asking! How can I help you today?"
+    }
+  ]
+}
+```
+
+## 9. Deployment Guidelines
+
+### Backend Deployment
+1. Compile TypeScript code: `npm run build`
+2. Set production environment variables
+3. Start the production server: `npm start`
+
+### Frontend Deployment
+1. Build the production bundle: `npm run build`
+2. Deploy the resulting `dist` directory to a static hosting service
+
+### Security Considerations
+- Use HTTPS for all production deployments
+- Set secure and SameSite attributes on cookies
+- Configure CORS policies appropriately
+- Keep all API keys secure and never expose in client-side code
+
+## 10. Troubleshooting Common Issues
+
+### OpenAI API Errors
+- **401 Unauthorized**: Verify your API key is valid and correctly configured
+- **429 Too Many Requests**: You've exceeded rate limits, switch to alternative model or implement more aggressive rate limiting
+- **500 Server Error**: Temporary OpenAI service issue, use retry mechanism or switch models
+
+### MongoDB Connection Issues
+- Verify MongoDB is running: `docker ps | grep mongo`
+- Check connection string in `.env` file
+- Ensure network connectivity between application and database
+
+### Authentication Problems
+- JWT token expiration: Check token lifetime configuration
+- Cookie issues: Verify cookie settings match your domain setup
+- CORS problems: Ensure proper CORS configuration for your domain
+
+## 11. Performance Optimization
+
+### Backend Optimization
+- Implement request caching for common queries
+- Use database indexing for frequently accessed fields
+- Optimize AI model prompt construction to reduce token usage
+
+### Frontend Optimization
+- Implement virtualized lists for long chat histories
+- Use lazy loading for components and routes
+- Optimize bundle size with code splitting
+
+## 12. Security Best Practices
+
+- Store sensitive configuration in environment variables
+- Implement proper input validation for all API endpoints
+- Use parameterized queries to prevent injection attacks
+- Set appropriate Content Security Policy headers
+- Implement rate limiting for authentication endpoints
+- Regularly update dependencies to patch security vulnerabilities
+
+## 13. Extending the Application
+
+### Adding New AI Models
+1. Create a new class implementing the `LLMProvider` interface in `llm-alternatives.ts`
+2. Add your new model type to the `SupportedLLM` type
+3. Implement the provider factory logic in the `createLLMProvider` function
+4. Add appropriate environment variables for configuration
+
+### Adding New Features
+- Support for AI-generated images
+- Multi-user chat rooms
+- Voice input/output
+- Document/file analysis with AI
+- Integration with external tools/APIs
+
+## 14. License and Credits
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 15. Contributors
+
+- Initial development: [Your Name/Team]
+- Documentation: [Your Name/Team]
+
+---
+
+*Last updated: May 2025* 

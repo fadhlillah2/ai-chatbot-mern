@@ -1,4 +1,42 @@
-# React + TypeScript + Vite
+# MERN AI ChatBot - Frontend
+
+This is the frontend for the MERN AI ChatBot application, built with React, TypeScript, and Vite.
+
+## Quick Commands
+
+```bash
+# Start frontend in development mode
+npm run dev
+
+# Build the application
+npm run build
+
+# Preview the production build
+npm run preview
+```
+
+## Root Project Commands
+
+For complete application management, use these commands from the project root directory:
+
+```bash
+# Restart frontend only
+npm run restart:frontend
+
+# Restart both frontend and backend
+npm run restart
+
+# Quick restart with detailed status
+npm run quick-restart
+```
+
+For more commands, check the root package.json file.
+
+---
+
+# Original Vite Documentation
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

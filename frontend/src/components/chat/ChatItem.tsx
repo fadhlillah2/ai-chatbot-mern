@@ -64,7 +64,28 @@ const ChatItem = ({
           backgroundColor: "rgba(100, 243, 213, 0.2)",
           border: "1px solid rgba(100, 243, 213, 0.5)" 
         }}>
-          <img src="openai.png" alt="AI" width={isMobile ? "24px" : "30px"} className="image-inverted" />
+          <svg
+            width={isMobile ? "24px" : "30px"}
+            height={isMobile ? "24px" : "30px"}
+            viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {/* Planet with ring */}
+            <circle cx="32" cy="32" r="16" fill="url(#cosmicAiGradient_chatItem)" />
+            <ellipse cx="32" cy="32" rx="24" ry="8" fill="none" stroke="#64f3d5" strokeWidth="1.5" strokeOpacity="0.8" transform="rotate(25, 32, 32)" />
+            <ellipse cx="32" cy="32" rx="20" ry="6" fill="none" stroke="#4287ff" strokeWidth="1" strokeOpacity="0.6" transform="rotate(25, 32, 32)" />
+            
+            {/* Moon */}
+            <circle cx="48" cy="24" r="4" fill="#64f3d5" opacity="0.8" />
+            
+            {/* Gradient definition */}
+            <defs>
+              <radialGradient id="cosmicAiGradient_chatItem" cx="40%" cy="40%" r="60%" fx="40%" fy="40%">
+                <stop offset="0%" stopColor="#4287ff" />
+                <stop offset="100%" stopColor="#1a2333" />
+              </radialGradient>
+            </defs>
+          </svg>
         </Avatar>
       </Box>
       

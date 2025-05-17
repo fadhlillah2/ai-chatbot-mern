@@ -1,0 +1,92 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#111d27" rx="20" ry="20" />
+  
+  <!-- App container -->
+  <rect x="50" y="50" width="1100" height="700" rx="10" ry="10" fill="#1a2333" stroke="#64f3d5" stroke-width="1" />
+  
+  <!-- Sidebar -->
+  <rect x="50" y="50" width="300" height="700" fill="#111d27" stroke="#64f3d5" stroke-width="1" rx="10" ry="10" />
+  
+  <!-- Cosmic Logo in Sidebar -->
+  <circle cx="175" cy="120" r="50" fill="url(#logoGradient)" />
+  <ellipse cx="175" cy="120" rx="75" ry="20" fill="none" stroke="#64f3d5" stroke-width="1.5" stroke-opacity="0.8" transform="rotate(25, 175, 120)" />
+  <ellipse cx="175" cy="120" rx="65" ry="15" fill="none" stroke="#4287ff" stroke-width="1" stroke-opacity="0.6" transform="rotate(25, 175, 120)" />
+  
+  <!-- Title in Sidebar -->
+  <text x="175" y="220" font-family="Orbitron, sans-serif" font-size="24" text-anchor="middle" fill="#ffffff" font-weight="bold">COSMIC AI</text>
+  <text x="175" y="250" font-family="Orbitron, sans-serif" font-size="24" text-anchor="middle" fill="#ffffff" font-weight="bold">EXPLORER</text>
+  <line x1="125" y1="270" x2="225" y2="270" stroke="url(#lineGradient)" stroke-width="2" />
+  
+  <!-- Conversation List -->
+  <rect x="70" y="300" width="260" height="50" rx="10" ry="10" fill="rgba(100, 243, 213, 0.1)" stroke="#64f3d5" stroke-width="1" />
+  <text x="100" y="330" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">New Conversation</text>
+  
+  <rect x="70" y="360" width="260" height="50" rx="10" ry="10" fill="rgba(66, 135, 255, 0.1)" />
+  <text x="100" y="390" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">Space Exploration</text>
+  
+  <rect x="70" y="420" width="260" height="50" rx="10" ry="10" fill="rgba(66, 135, 255, 0.1)" />
+  <text x="100" y="450" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">Quantum Physics</text>
+  
+  <rect x="70" y="480" width="260" height="50" rx="10" ry="10" fill="rgba(66, 135, 255, 0.1)" />
+  <text x="100" y="510" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">AI Development</text>
+  
+  <!-- Chat Area -->
+  <rect x="370" y="70" width="760" height="660" rx="10" ry="10" fill="rgba(30, 43, 61, 0.5)" />
+  
+  <!-- Message bubbles -->
+  <!-- User message -->
+  <rect x="400" y="100" width="350" height="80" rx="15" ry="15" fill="rgba(100, 243, 213, 0.15)" stroke="#64f3d5" stroke-width="1" />
+  <text x="420" y="140" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">Tell me about cosmic exploration</text>
+  
+  <!-- AI Response -->
+  <rect x="400" y="200" width="700" height="200" rx="15" ry="15" fill="rgba(66, 135, 255, 0.15)" stroke="#4287ff" stroke-width="1" />
+  <text x="420" y="240" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">Cosmic exploration represents humanity's quest to</text>
+  <text x="420" y="270" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">understand the universe beyond our planet. From</text>
+  <text x="420" y="300" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">telescopes scanning distant galaxies to probes sent</text>
+  <text x="420" y="330" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">to neighboring planets, we're gradually mapping the</text>
+  <text x="420" y="360" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">cosmic ocean and discovering its wonders.</text>
+  
+  <!-- User message -->
+  <rect x="400" y="420" width="350" height="80" rx="15" ry="15" fill="rgba(100, 243, 213, 0.15)" stroke="#64f3d5" stroke-width="1" />
+  <text x="420" y="460" font-family="Roboto Slab, serif" font-size="16" fill="#ffffff">What's the most distant object we've observed?</text>
+  
+  <!-- Input Area -->
+  <rect x="400" y="650" width="700" height="60" rx="30" ry="30" fill="rgba(30, 43, 61, 0.8)" stroke="#64f3d5" stroke-width="1" />
+  <text x="440" y="687" font-family="Roboto Slab, serif" font-size="16" fill="#64f3d5" fill-opacity="0.7">Ask anything about the cosmos...</text>
+  
+  <!-- Send Button -->
+  <circle cx="1050" cy="680" r="20" fill="url(#buttonGradient)" />
+  <path d="M1045,680 L1060,680 M1060,680 L1050,670 M1060,680 L1050,690" stroke="#ffffff" stroke-width="2" fill="none" />
+  
+  <!-- Floating orbs and decorations -->
+  <circle cx="900" cy="500" r="5" fill="#64f3d5" opacity="0.6" class="floating-orb" />
+  <circle cx="950" cy="200" r="3" fill="#4287ff" opacity="0.5" class="floating-orb" />
+  <circle cx="400" cy="570" r="4" fill="#e142ff" opacity="0.4" class="floating-orb" />
+  
+  <!-- Cosmic stars -->
+  <circle cx="700" cy="100" r="1" fill="#ffffff" />
+  <circle cx="830" cy="150" r="1.5" fill="#ffffff" />
+  <circle cx="950" cy="300" r="1" fill="#ffffff" />
+  <circle cx="600" cy="450" r="1.2" fill="#ffffff" />
+  <circle cx="450" cy="600" r="1" fill="#ffffff" />
+  <circle cx="850" cy="550" r="1.3" fill="#ffffff" />
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#64f3d5" />
+      <stop offset="100%" stop-color="#4287ff" />
+    </linearGradient>
+    
+    <radialGradient id="logoGradient" cx="40%" cy="40%" r="60%" fx="40%" fy="40%">
+      <stop offset="0%" stop-color="#64f3d5" />
+      <stop offset="100%" stop-color="#4287ff" />
+    </radialGradient>
+    
+    <linearGradient id="buttonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64f3d5" />
+      <stop offset="100%" stop-color="#4287ff" />
+    </linearGradient>
+  </defs>
+</svg> 

@@ -99,7 +99,39 @@ const Chat = () => {
     if (!auth?.user) {
       return navigate("/login");
     }
-  }, [auth]);
+    
+    // Tambahkan CSS untuk animasi khusus
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes rotateGradient {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      @keyframes shootingStar {
+        0% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(150px) translateX(-100px);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, [auth, navigate]);
   
   // Generate random stars for background
   const renderStars = () => {
@@ -714,22 +746,175 @@ const Chat = () => {
                 <Box 
                   className="cosmic-glow pulse"
                   sx={{
-                    width: { xs: "80px", sm: "100px", md: "120px" },
-                    height: { xs: "80px", sm: "100px", md: "120px" },
+                    width: { xs: "120px", sm: "150px", md: "180px" },
+                    height: { xs: "120px", sm: "150px", md: "180px" },
                     borderRadius: "50%",
-                    background: "linear-gradient(45deg, rgba(66, 135, 255, 0.2), rgba(100, 243, 213, 0.2))",
+                    background: "linear-gradient(180deg, rgba(17, 29, 39, 0.8), rgba(17, 29, 39, 0.5))",
+                    border: "2px solid rgba(100, 243, 213, 0.3)",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    mb: 3
+                    mb: 3,
+                    position: "relative",
+                    overflow: "hidden",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      top: "-50%",
+                      left: "-50%",
+                      width: "200%",
+                      height: "200%",
+                      background: "conic-gradient(from 0deg, transparent, rgba(100, 243, 213, 0.3), transparent 40%)",
+                      animation: "rotateGradient 8s linear infinite",
+                      zIndex: 0,
+                    },
+                    "&::after": {
+                      content: '""',
+                      position: "absolute",
+                      inset: "6px",
+                      borderRadius: "50%",
+                      background: "radial-gradient(circle at center, rgba(17, 29, 39, 0.9), rgba(17, 29, 39, 0.7))",
+                      zIndex: 0,
+                    }
                   }}
                 >
-                  <img 
-                    src="robot.png" 
-                    alt="AI" 
-                    style={{ width: "70%", height: "70%" }}
+                  {/* Cosmic Logo - SVG dibuat langsung */}
+                  <Box 
+                    sx={{
+                      position: "relative", 
+                      zIndex: 2, 
+                      width: "75%", 
+                      height: "75%",
+                      animation: "pulse 3s ease-in-out infinite alternate"
+                    }}
+                  >
+                    <svg 
+                      viewBox="0 0 200 200" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ width: "100%", height: "100%" }}
+                    >
+                      {/* Planetary Ring */}
+                      <ellipse 
+                        cx="100" 
+                        cy="100" 
+                        rx="70" 
+                        ry="20" 
+                        stroke="rgba(100, 243, 213, 0.8)" 
+                        strokeWidth="1.5"
+                        transform="rotate(-25, 100, 100)"
+                        strokeDasharray="3,3"
+                      />
+                      <ellipse 
+                        cx="100" 
+                        cy="100" 
+                        rx="60" 
+                        ry="16" 
+                        stroke="rgba(66, 135, 255, 0.7)" 
+                        strokeWidth="1"
+                        transform="rotate(-25, 100, 100)"
+                      />
+                      
+                      {/* Main Planet */}
+                      <circle 
+                        cx="100" 
+                        cy="100" 
+                        r="40" 
+                        fill="url(#planetGradient)" 
+                      />
+                      
+                      {/* Small Moon */}
+                      <circle 
+                        cx="140" 
+                        cy="70" 
+                        r="12" 
+                        fill="url(#moonGradient)"
+                        style={{ filter: "drop-shadow(0 0 3px rgba(100, 243, 213, 0.5))" }} 
+                      />
+                      
+                      {/* Glow Spots on Planet */}
+                      <circle cx="85" cy="85" r="10" fill="url(#glowSpot)" opacity="0.7" />
+                      <circle cx="110" cy="95" r="12" fill="url(#glowSpot2)" opacity="0.6" />
+                      
+                      {/* Stars */}
+                      <circle cx="50" cy="50" r="1.5" fill="white" />
+                      <circle cx="150" cy="40" r="1.8" fill="#64f3d5" />
+                      <circle cx="30" cy="150" r="1" fill="white" />
+                      <circle cx="170" cy="130" r="1.3" fill="#4287ff" />
+                      <circle cx="65" cy="160" r="1" fill="white" />
+                      
+                      {/* Cosmic Ray */}
+                      <path 
+                        d="M100 60C130 0 160 40 180 30" 
+                        stroke="url(#rayGradient)" 
+                        strokeWidth="1.5" 
+                        strokeLinecap="round"
+                      />
+                      
+                      {/* Gradients */}
+                      <defs>
+                        <radialGradient id="planetGradient" cx="0.5" cy="0.5" r="0.5">
+                          <stop offset="0%" stopColor="#4287ff" />
+                          <stop offset="70%" stopColor="#2a3e60" />
+                          <stop offset="100%" stopColor="#1a2333" />
+                        </radialGradient>
+                        
+                        <radialGradient id="moonGradient" cx="0.5" cy="0.5" r="0.5">
+                          <stop offset="0%" stopColor="#64f3d5" />
+                          <stop offset="90%" stopColor="#3a9a87" />
+                        </radialGradient>
+                        
+                        <radialGradient id="glowSpot" cx="0.5" cy="0.5" r="0.5">
+                          <stop offset="0%" stopColor="rgba(100, 243, 213, 0.9)" />
+                          <stop offset="100%" stopColor="rgba(100, 243, 213, 0)" />
+                        </radialGradient>
+                        
+                        <radialGradient id="glowSpot2" cx="0.5" cy="0.5" r="0.5">
+                          <stop offset="0%" stopColor="rgba(66, 135, 255, 0.8)" />
+                          <stop offset="100%" stopColor="rgba(66, 135, 255, 0)" />
+                        </radialGradient>
+                        
+                        <linearGradient id="rayGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="rgba(100, 243, 213, 0)" />
+                          <stop offset="50%" stopColor="rgba(100, 243, 213, 0.8)" />
+                          <stop offset="100%" stopColor="rgba(100, 243, 213, 0)" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </Box>
+                  
+                  {/* Animasi bintang jatuh di belakang logo */}
+                  <Box 
+                    sx={{
+                      position: "absolute",
+                      top: "-10%",
+                      left: "60%",
+                      width: "2px",
+                      height: "20px",
+                      background: "linear-gradient(to bottom, rgba(255,255,255,0), white)",
+                      animation: "shootingStar 2.5s linear infinite",
+                      zIndex: 1,
+                      opacity: 0.7,
+                      animationDelay: "1.5s"
+                    }}
+                  />
+                  
+                  <Box 
+                    sx={{
+                      position: "absolute",
+                      top: "30%",
+                      left: "20%",
+                      width: "1px",
+                      height: "15px",
+                      background: "linear-gradient(to bottom, rgba(255,255,255,0), #64f3d5)",
+                      animation: "shootingStar 3s linear infinite",
+                      zIndex: 1,
+                      opacity: 0.7,
+                      animationDelay: "0.7s"
+                    }}
                   />
                 </Box>
+                
                 <Typography 
                   className="cosmic-text"
                   sx={{ 

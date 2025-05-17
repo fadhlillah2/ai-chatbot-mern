@@ -212,11 +212,34 @@ const Home = () => {
                 border: "1px solid rgba(100, 243, 213, 0.5)",
                 borderRadius: "50%",
               }}></Box>
-              <img
-                src="robot.png"
-                alt="Advanced AI"
-                style={{ width: "60%", height: "60%" }}
-              />
+              <svg
+                width="60%"
+                height="60%"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Planet with rings */}
+                <circle cx="50" cy="50" r="25" fill="url(#planetGradient)" />
+                <ellipse cx="50" cy="50" rx="40" ry="10" fill="none" stroke="#64f3d5" strokeWidth="1.5" strokeOpacity="0.8" transform="rotate(25, 50, 50)" />
+                <ellipse cx="50" cy="50" rx="35" ry="8" fill="none" stroke="#4287ff" strokeWidth="1" strokeOpacity="0.6" transform="rotate(25, 50, 50)" />
+                
+                {/* Moon */}
+                <circle cx="75" cy="40" r="6" fill="#64f3d5" opacity="0.8" />
+                
+                {/* Stars */}
+                <circle cx="20" cy="30" r="1.5" fill="#ffffff" />
+                <circle cx="25" cy="70" r="1" fill="#ffffff" />
+                <circle cx="80" cy="75" r="1.2" fill="#ffffff" />
+                <circle cx="65" cy="20" r="1" fill="#ffffff" />
+                
+                {/* Gradient definition */}
+                <defs>
+                  <radialGradient id="planetGradient" cx="40%" cy="40%" r="60%" fx="40%" fy="40%">
+                    <stop offset="0%" stopColor="#64f3d5" />
+                    <stop offset="100%" stopColor="#4287ff" />
+                  </radialGradient>
+                </defs>
+              </svg>
             </Box>
             <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Advanced Intelligence</Typography>
             <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
@@ -248,12 +271,37 @@ const Home = () => {
                 border: "1px solid rgba(225, 66, 255, 0.5)",
                 borderRadius: "50%",
               }}></Box>
-              <img
-                src="openai.png"
-                alt="openai"
-                style={{ width: "60%" }}
-                className="image-inverted"
-              />
+              <svg
+                width="60%"
+                height="60%"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Nebula background */}
+                <circle cx="50" cy="50" r="30" fill="url(#nebulaGradient)" />
+                
+                {/* Stars */}
+                <circle cx="30" cy="30" r="1.5" fill="#ffffff" opacity="0.8" />
+                <circle cx="60" cy="35" r="1" fill="#ffffff" opacity="0.8" />
+                <circle cx="70" cy="60" r="1.2" fill="#ffffff" opacity="0.8" />
+                <circle cx="35" cy="65" r="1" fill="#ffffff" opacity="0.8" />
+                
+                {/* Cosmic models visualization */}
+                <path d="M35,40 Q50,30 65,40 Q80,50 65,60 Q50,70 35,60 Q20,50 35,40" 
+                      fill="none" stroke="#ffffff" strokeWidth="1.5" strokeOpacity="0.6" />
+                <circle cx="35" cy="40" r="3" fill="#e142ff" />
+                <circle cx="65" cy="40" r="3" fill="#ff4b4b" />
+                <circle cx="65" cy="60" r="3" fill="#e142ff" />
+                <circle cx="35" cy="60" r="3" fill="#ff4b4b" />
+                
+                {/* Gradient definition */}
+                <defs>
+                  <radialGradient id="nebulaGradient" cx="40%" cy="40%" r="60%" fx="40%" fy="40%">
+                    <stop offset="0%" stopColor="#e142ff" />
+                    <stop offset="100%" stopColor="#ff4b4b" />
+                  </radialGradient>
+                </defs>
+              </svg>
             </Box>
             <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Multiple Models</Typography>
             <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
@@ -285,11 +333,38 @@ const Home = () => {
                 border: "1px solid rgba(66, 135, 255, 0.5)",
                 borderRadius: "50%",
               }}></Box>
-              <img
-                src="chat.png"
-                alt="Secure Chat"
-                style={{ width: "60%", borderRadius: "10px" }}
-              />
+              <svg
+                width="60%"
+                height="60%"
+                viewBox="0 0 100 100"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Planet background */}
+                <circle cx="50" cy="50" r="30" fill="url(#chatPlanetGradient)" />
+                
+                {/* Message bubble design */}
+                <path d="M30,40 L70,40 C75,40 80,45 80,50 L80,65 C80,70 75,75 70,75 L60,75 L55,85 L50,75 L30,75 C25,75 20,70 20,65 L20,50 C20,45 25,40 30,40 Z" 
+                      fill="none" stroke="#ffffff" strokeWidth="1.5" />
+                      
+                {/* Secure lock symbol */}
+                <circle cx="50" cy="58" r="8" fill="none" stroke="#ffffff" strokeWidth="1.5" />
+                <rect x="46" y="50" width="8" height="8" fill="#4287ff" rx="2" />
+                <rect x="48" y="54" width="4" height="8" fill="#4287ff" rx="1" />
+                
+                {/* Stars */}
+                <circle cx="25" cy="35" r="1" fill="#ffffff" />
+                <circle cx="75" cy="35" r="1.2" fill="#ffffff" />
+                <circle cx="85" cy="55" r="1" fill="#ffffff" />
+                <circle cx="20" cy="65" r="1.5" fill="#ffffff" />
+                
+                {/* Gradient definition */}
+                <defs>
+                  <radialGradient id="chatPlanetGradient" cx="40%" cy="40%" r="60%" fx="40%" fy="40%">
+                    <stop offset="0%" stopColor="#4287ff" />
+                    <stop offset="100%" stopColor="#0426ab" />
+                  </radialGradient>
+                </defs>
+              </svg>
             </Box>
             <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Secure Conversations</Typography>
             <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
@@ -313,7 +388,7 @@ const Home = () => {
             }}
           >
             <img
-              src="chat.png"
+              src="app-preview.svg"
               alt="AI Chat Interface"
               style={{
                 width: "100%",

@@ -1,17 +1,248 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;800&family=Work+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Roboto+Slab:wght@300;400;500;600;800&family=Work+Sans&display=swap");
 
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #05101c;
+  background: #000;
   color: white;
-  font-family: "Roboto Slab", serif;
+  font-family: "Orbitron", "Roboto Slab", serif;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
+/* Cosmic Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  z-index: -2;
+}
+
+/* Stars Animation */
+@keyframes animateStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  transform: rotate(-45deg);
+  z-index: -1;
+}
+
+.star {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 
+    1744px 122px #FFF,
+    134px 1321px #FFF,
+    695px 1682px #FFF,
+    1682px 1833px #FFF,
+    1799px 244px #FFF,
+    782px 247px #FFF,
+    841px 1659px #FFF,
+    361px 486px #FFF,
+    878px 276px #FFF,
+    1962px 1612px #FFF,
+    328px 1416px #FFF,
+    253px 240px #FFF,
+    547px 1728px #FFF,
+    1344px 371px #FFF,
+    478px 932px #FFF,
+    1969px 235px #FFF,
+    1493px 871px #FFF,
+    957px 97px #FFF,
+    767px 644px #FFF,
+    102px 1747px #FFF,
+    519px 1108px #FFF,
+    431px 1928px #FFF,
+    816px 746px #FFF,
+    871px 1695px #FFF,
+    1739px 1705px #FFF,
+    450px 1291px #FFF,
+    796px 981px #FFF,
+    1570px 16px #FFF,
+    235px 703px #FFF,
+    82px 1903px #FFF,
+    1276px 122px #FFF,
+    1429px 1538px #FFF,
+    955px 86px #FFF,
+    1718px 1259px #FFF,
+    275px 1515px #FFF,
+    1374px 823px #FFF,
+    483px 793px #FFF,
+    1996px 1807px #FFF,
+    1273px 1824px #FFF,
+    1px 834px #FFF,
+    1104px 1345px #FFF,
+    1571px 1112px #FFF,
+    1871px 1648px #FFF,
+    1126px 249px #FFF,
+    1265px 565px #FFF,
+    1332px 133px #FFF,
+    100px 1037px #FFF;
+  animation: animateStar 50s linear infinite;
+}
+
+.star:after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 
+    1744px 122px #FFF,
+    134px 1321px #FFF,
+    695px 1682px #FFF,
+    1682px 1833px #FFF,
+    1799px 244px #FFF,
+    782px 247px #FFF,
+    841px 1659px #FFF,
+    361px 486px #FFF,
+    878px 276px #FFF,
+    1962px 1612px #FFF,
+    328px 1416px #FFF,
+    253px 240px #FFF,
+    547px 1728px #FFF,
+    1344px 371px #FFF,
+    478px 932px #FFF,
+    1969px 235px #FFF,
+    1493px 871px #FFF,
+    957px 97px #FFF,
+    767px 644px #FFF,
+    102px 1747px #FFF,
+    519px 1108px #FFF,
+    431px 1928px #FFF,
+    816px 746px #FFF,
+    871px 1695px #FFF,
+    1739px 1705px #FFF,
+    450px 1291px #FFF,
+    796px 981px #FFF,
+    1570px 16px #FFF,
+    235px 703px #FFF,
+    82px 1903px #FFF,
+    1276px 122px #FFF,
+    1429px 1538px #FFF,
+    955px 86px #FFF,
+    1718px 1259px #FFF,
+    275px 1515px #FFF,
+    1374px 823px #FFF,
+    483px 793px #FFF,
+    1996px 1807px #FFF,
+    1273px 1824px #FFF,
+    1px 834px #FFF,
+    1104px 1345px #FFF,
+    1571px 1112px #FFF,
+    1871px 1648px #FFF,
+    1126px 249px #FFF,
+    1265px 565px #FFF,
+    1332px 133px #FFF,
+    100px 1037px #FFF;
+}
+
+/* Shooting stars */
+.shooting-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 50%,rgba(255,255,255,0) 100%);
+  animation: shooting 5s linear infinite;
+  transform: rotate(-45deg);
+}
+
+.shooting-star:nth-child(1) {
+  top: 10%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.shooting-star:nth-child(2) {
+  top: 30%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.shooting-star:nth-child(3) {
+  top: 70%;
+  left: 40%;
+  animation-delay: 4s;
+}
+
+@keyframes shooting {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-1000px) translateY(1000px) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* Cosmic Elements */
+.cosmic-glow {
+  box-shadow: 0 0 15px #64f3d5, 0 0 30px rgba(100, 243, 213, 0.4), 0 0 45px rgba(100, 243, 213, 0.2);
+}
+
+.nebula-glow {
+  box-shadow: 0 0 15px #e142ff, 0 0 30px rgba(225, 66, 255, 0.4), 0 0 45px rgba(225, 66, 255, 0.2);
+}
+
+.planet-glow {
+  box-shadow: 0 0 15px #4287ff, 0 0 30px rgba(66, 135, 255, 0.4), 0 0 45px rgba(66, 135, 255, 0.2);
+}
+
+/* Cosmic UI Elements */
+.cosmic-card {
+  background: rgba(17, 29, 39, 0.8);
+  border: 1px solid rgba(100, 243, 213, 0.3);
+  backdrop-filter: blur(6px);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(100, 243, 213, 0.15);
+  transition: all 0.3s ease;
+}
+
+.cosmic-card:hover {
+  border-color: rgba(100, 243, 213, 0.6);
+  box-shadow: 0 0 25px rgba(100, 243, 213, 0.3);
+}
+
+.cosmic-input {
+  background: rgba(17, 29, 39, 0.9) !important;
+  border: 1px solid rgba(100, 243, 213, 0.4) !important;
+  color: #fff !important;
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+}
+
+.cosmic-input:focus {
+  border-color: rgba(100, 243, 213, 0.8) !important;
+  box-shadow: 0 0 15px rgba(100, 243, 213, 0.3) !important;
+}
+
+/* Original CSS */
 .image-inverted {
   filter: invert(100%);
 }
+
 .nav-link {
   font-weight: 600;
   text-transform: uppercase;
@@ -21,14 +252,36 @@ body {
   border-radius: 10px;
   text-decoration: none;
   letter-spacing: 1px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-100%);
+  transition: all 0.3s ease;
+  z-index: -1;
+}
+
+.nav-link:hover::before {
+  transform: translateX(0);
+}
+
 .MuiOutlinedInput-input-root.Mui-focused,
 .MuiOutlinedInput-notchedOutline {
-  border-color: white !important;
+  border-color: #64f3d5 !important;
 }
 
 .rotate {
-  animation: rotation 8s infinite linear;
+  animation: rotation 20s infinite linear;
 }
 
 @keyframes rotation {
@@ -38,4 +291,48 @@ body {
   to {
     transform: rotate(359deg);
   }
+}
+
+/* Pulsating effect */
+.pulse {
+  animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Typewriter text effect */
+.cosmic-text {
+  background: linear-gradient(to right, #64f3d5, #e142ff, #4287ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cosmic-text-animation 10s infinite;
+}
+
+@keyframes cosmic-text-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(17, 29, 39, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #64f3d5, #4287ff);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #4287ff, #e142ff);
 }

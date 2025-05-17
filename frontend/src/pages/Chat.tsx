@@ -151,8 +151,8 @@ const Chat = () => {
       <Box
         sx={{
           position: "absolute",
-          top: "65%",
-          left: "18%",
+          top: "60%",
+          left: "70%",
           width: "35px",
           height: "35px",
           borderRadius: "50%",
@@ -182,7 +182,7 @@ const Chat = () => {
         sx={{
           position: "absolute",
           top: "35%",
-          right: "22%",
+          right: "25%",
           width: "18px",
           height: "18px",
           borderRadius: "50%",
@@ -193,17 +193,17 @@ const Chat = () => {
         style={{ animation: "float 4s infinite ease-in-out" }}
       />
       
-      {/* Orbital ring decoration - centered and adjusted */}
+      {/* Orbital ring decoration - positioned to the left */}
       <Box
         sx={{
           position: "absolute",
           top: "10%",
-          left: "50%",
-          width: "180px",
-          height: "180px",
+          left: "30%",
+          width: "160px",
+          height: "160px",
           borderRadius: "50%",
           border: "1px solid rgba(66, 135, 255, 0.2)",
-          transform: "translateX(-50%)",
+          transform: "none",
           opacity: 0.5,
           zIndex: 0
         }}
@@ -213,12 +213,12 @@ const Chat = () => {
         sx={{
           position: "absolute",
           top: "7%",
-          left: "50%",
-          width: "240px",
-          height: "240px",
+          left: "25%",
+          width: "220px",
+          height: "220px",
           borderRadius: "50%",
           border: "1px dashed rgba(100, 243, 213, 0.2)",
-          transform: "translateX(-50%)",
+          transform: "none",
           opacity: 0.5,
           zIndex: 0
         }}
@@ -231,12 +231,12 @@ const Chat = () => {
         sx={{
           position: "absolute",
           top: "15%",
-          left: "50%",
-          width: "130px",
-          height: "130px",
+          left: "35%",
+          width: "110px",
+          height: "110px",
           borderRadius: "50%",
           border: "1px dotted rgba(225, 66, 255, 0.2)",
-          transform: "translateX(-50%)",
+          transform: "none",
           opacity: 0.4,
           zIndex: 0
         }}
@@ -249,12 +249,14 @@ const Chat = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          alignItems: "flex-start",
           position: "relative",
           zIndex: 1,
           mb: 2.5,
           mt: 1,
-          pt: 1
+          pt: 1,
+          pl: "1%",
+          width: "100%"
         }}
       >
         {/* Profile avatar with cosmic glow - adjusted size */}
@@ -263,7 +265,7 @@ const Chat = () => {
             position: "relative",
             width: "72px",
             height: "72px",
-            margin: "0 auto 18px",
+            margin: "0 0 18px 0",
             "&::before": {
               content: "''",
               position: "absolute",
@@ -283,7 +285,6 @@ const Chat = () => {
             sx={{
               width: "100%",
               height: "100%",
-              mx: "auto",
               bgcolor: "rgba(100, 243, 213, 0.8)",
               color: "black",
               fontWeight: 700,
@@ -301,9 +302,10 @@ const Chat = () => {
         <Box
           sx={{
             position: "relative",
-            textAlign: "center",
+            textAlign: "left",
             mb: 1.5,
-            width: "100%"
+            width: "80%",
+            ml: 0
           }}
         >
           {/* Decorative underline - adjusted width and position */}
@@ -312,11 +314,10 @@ const Chat = () => {
             sx={{
               position: "absolute",
               bottom: "-6px",
-              left: "50%",
-              transform: "translateX(-50%)",
+              left: "0%",
               height: "2px",
-              width: "60%",
-              background: "linear-gradient(90deg, transparent, rgba(100, 243, 213, 0.7), transparent)",
+              width: "80%",
+              background: "linear-gradient(90deg, rgba(100, 243, 213, 0.7), transparent)",
             }}
           />
           
@@ -342,8 +343,8 @@ const Chat = () => {
             height: "1px",
             background: "linear-gradient(to right, rgba(100, 243, 213, 0.3), transparent)",
             my: 1.5,
-            ml: "5%",
-            mr: "15%",
+            ml: "0%",
+            mr: "20%",
             opacity: 0.6
           }}
         />
@@ -353,7 +354,7 @@ const Chat = () => {
           display: "flex", 
           width: "100%", 
           justifyContent: "flex-start", 
-          pl: "5%"
+          pl: "1%"
         }}>
           <Chip 
             label="OMNISCIENT AI" 
@@ -381,8 +382,8 @@ const Chat = () => {
         sx={{
           position: "relative",
           mb: 2.5,
-          ml: "5%",
-          mr: "15%",
+          ml: "1%",
+          mr: "19%",
           p: 1.5,
           pt: 2,
           borderRadius: "8px",
@@ -411,7 +412,7 @@ const Chat = () => {
             position: "relative",
             width: "16px", 
             height: "16px", 
-            ml: 1,
+            ml: 0.5,
             mr: "auto",
             mb: 1,
             opacity: 0.7,
@@ -440,7 +441,7 @@ const Chat = () => {
           justifyContent: "flex-start", 
           mb: 1.2,
           mt: 0.2,
-          ml: 1
+          ml: 0.5
         }}>
           {[0, 1, 2].map((i) => (
             <Box 
@@ -463,7 +464,7 @@ const Chat = () => {
           fontSize: "0.78rem", 
           letterSpacing: "0.4px",
           lineHeight: 1.5,
-          pl: 1,
+          pl: 0.5,
           pr: 1.5,
           pb: 0.5,
           color: "rgba(255, 255, 255, 0.9)",
@@ -484,14 +485,14 @@ const Chat = () => {
           background: "linear-gradient(to right, rgba(225, 66, 255, 0.3), transparent)",
           mb: 2,
           mt: "auto",
-          ml: "5%",
-          mr: "35%",
+          ml: "1%",
+          mr: "39%",
           opacity: 0.6
         }}
       />
       
       {/* Action button section - refined button */}
-      <Box sx={{ display: "flex", justifyContent: "flex-start", zIndex: 1, mb: 1.5, pl: "5%" }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-start", zIndex: 1, mb: 1.5, pl: "1%" }}>
         <Button
           onClick={handleDeleteChats}
           className="nebula-glow cosmic-shine"
@@ -534,7 +535,7 @@ const Chat = () => {
           fontFamily: "Orbitron, sans-serif",
           letterSpacing: "1px",
           mt: 0.5,
-          pl: "5%"
+          pl: "1%"
         }}
       >
         COSMIC OS v1.0.1

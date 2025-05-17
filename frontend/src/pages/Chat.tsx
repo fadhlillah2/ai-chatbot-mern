@@ -1,9 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Box, Avatar, Typography, Button, IconButton, Container, Tooltip, Chip } from "@mui/material";
+import { Box, Avatar, Typography, Button, IconButton, Container, Tooltip, Chip, Drawer, useMediaQuery, useTheme } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
 import ChatItem from "../components/chat/ChatItem";
 import { IoMdSend } from "react-icons/io";
 import { CgSpinner } from "react-icons/cg";
+import { FiMenu, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import {
   deleteUserChats,
@@ -24,6 +25,9 @@ const Chat = () => {
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   
   // Scroll to bottom whenever messages change
   useEffect(() => {
@@ -45,8 +49,8 @@ const Chat = () => {
     setIsLoading(true);
     
     try {
-      const chatData = await sendChatRequest(content);
-      setChatMessages([...chatData.chats]);
+    const chatData = await sendChatRequest(content);
+    setChatMessages([...chatData.chats]);
     } catch (error) {
       toast.error("Something went wrong during chat.");
       console.error(error);
@@ -67,6 +71,9 @@ const Chat = () => {
       await deleteUserChats();
       setChatMessages([]);
       toast.success("All transmissions cleared successfully", { id: "deletechats" });
+      if (isMobile) {
+        setDrawerOpen(false);
+      }
     } catch (error) {
       console.log(error);
       toast.error("Failed to clear transmissions", { id: "deletechats" });
@@ -123,8 +130,420 @@ const Chat = () => {
     return starElements;
   };
 
+  // Sidebar content
+  const sidebarContent = (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: isMobile ? "100%" : "100%",
+        height: isMobile ? "100vh" : "60vh",
+        borderRadius: isMobile ? 0 : 5,
+        p: isMobile ? 2 : 3,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* Animated mini stars in the background */}
+      {renderStars()}
+      
+      {/* Floating orbs - repositioned for better balance */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "65%",
+          left: "18%",
+          width: "35px",
+          height: "35px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 30% 30%, rgba(66, 135, 255, 0.6), rgba(66, 135, 255, 0.1))",
+          opacity: 0.5,
+          zIndex: 0
+        }}
+        style={{ animation: "float 7s infinite ease-in-out" }}
+      />
+      
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: "25%",
+          right: "15%",
+          width: "22px",
+          height: "22px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 30% 30%, rgba(100, 243, 213, 0.6), rgba(100, 243, 213, 0.1))",
+          opacity: 0.5,
+          zIndex: 0
+        }}
+        style={{ animation: "float 5s infinite ease-in-out reverse" }}
+      />
+      
+      <Box
+        sx={{
+          position: "absolute",
+          top: "35%",
+          right: "22%",
+          width: "18px",
+          height: "18px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle at 30% 30%, rgba(225, 66, 255, 0.6), rgba(225, 66, 255, 0.1))",
+          opacity: 0.5,
+          zIndex: 0
+        }}
+        style={{ animation: "float 4s infinite ease-in-out" }}
+      />
+      
+      {/* Orbital ring decoration - centered and adjusted */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "10%",
+          left: "50%",
+          width: "180px",
+          height: "180px",
+          borderRadius: "50%",
+          border: "1px solid rgba(66, 135, 255, 0.2)",
+          transform: "translateX(-50%)",
+          opacity: 0.5,
+          zIndex: 0
+        }}
+        className="rotate"
+      />
+      <Box
+        sx={{
+          position: "absolute",
+          top: "7%",
+          left: "50%",
+          width: "240px",
+          height: "240px",
+          borderRadius: "50%",
+          border: "1px dashed rgba(100, 243, 213, 0.2)",
+          transform: "translateX(-50%)",
+          opacity: 0.5,
+          zIndex: 0
+        }}
+        className="rotate"
+        style={{ animationDuration: "30s" }}
+      />
+      
+      {/* Extra orbit with different rotation */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "15%",
+          left: "50%",
+          width: "130px",
+          height: "130px",
+          borderRadius: "50%",
+          border: "1px dotted rgba(225, 66, 255, 0.2)",
+          transform: "translateX(-50%)",
+          opacity: 0.4,
+          zIndex: 0
+        }}
+        className="rotate"
+        style={{ animationDirection: "reverse", animationDuration: "15s" }}
+      />
+      
+      {/* Header section - improved spacing */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          position: "relative",
+          zIndex: 1,
+          mb: 2.5,
+          mt: 1,
+          pt: 1
+        }}
+      >
+        {/* Profile avatar with cosmic glow - adjusted size */}
+        <Box
+          sx={{
+            position: "relative",
+            width: "72px",
+            height: "72px",
+            margin: "0 auto 18px",
+            "&::before": {
+              content: "''",
+              position: "absolute",
+              top: "-5px",
+              left: "-5px",
+              right: "-5px",
+              bottom: "-5px",
+              borderRadius: "50%",
+              background: "linear-gradient(45deg, rgba(100, 243, 213, 0.3), rgba(66, 135, 255, 0.3))",
+              opacity: 0.6,
+              zIndex: -1
+            }
+          }}
+          className="cosmic-glow avatar-pulse"
+        >
+          <Avatar
+            sx={{
+              width: "100%",
+              height: "100%",
+              mx: "auto",
+              bgcolor: "rgba(100, 243, 213, 0.8)",
+              color: "black",
+              fontWeight: 700,
+              fontSize: "1.4rem",
+              fontFamily: "Orbitron, sans-serif",
+              border: "2px solid rgba(66, 135, 255, 0.6)",
+            }}
+          >
+            {auth?.user?.name[0]}
+            {auth?.user?.name.split(" ")[1] ? auth?.user?.name.split(" ")[1][0] : ""}
+          </Avatar>
+        </Box>
+        
+        {/* Title with cosmic styling - improved positioning */}
+        <Box
+          sx={{
+            position: "relative",
+            textAlign: "center",
+            mb: 1.5,
+            width: "100%"
+          }}
+        >
+          {/* Decorative underline - adjusted width and position */}
+          <Box
+            className="cosmic-shine"
+            sx={{
+              position: "absolute",
+              bottom: "-6px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              height: "2px",
+              width: "60%",
+              background: "linear-gradient(90deg, transparent, rgba(100, 243, 213, 0.7), transparent)",
+            }}
+          />
+          
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              fontFamily: "Orbitron, sans-serif",
+              fontWeight: 700,
+              letterSpacing: 2,
+              fontSize: "1rem",
+              textShadow: "0 0 10px rgba(100, 243, 213, 0.5)"
+            }}
+            className="cosmic-text"
+          >
+            COSMIC DIALOGUE
+          </Typography>
+        </Box>
+        
+        {/* Divider for visual separation */}
+        <Box
+          sx={{
+            width: "80%",
+            height: "1px",
+            background: "linear-gradient(to right, rgba(100, 243, 213, 0.3), transparent)",
+            my: 1.5,
+            ml: "5%",
+            mr: "15%",
+            opacity: 0.6
+          }}
+        />
+        
+        {/* AI model chip - refined size and positioning */}
+        <Box sx={{ 
+          display: "flex", 
+          width: "100%", 
+          justifyContent: "flex-start", 
+          pl: "5%"
+        }}>
+          <Chip 
+            label="OMNISCIENT AI" 
+            sx={{
+              mt: 1,
+              mb: 2.5,
+              backgroundColor: "rgba(66, 135, 255, 0.2)",
+              border: "1px solid rgba(66, 135, 255, 0.5)",
+              color: "#64f3d5",
+              fontFamily: "Orbitron, sans-serif",
+              letterSpacing: 1,
+              fontSize: "0.65rem",
+              height: "28px",
+              "& .MuiChip-label": {
+                padding: "0 12px"
+              }
+            }}
+          />
+        </Box>
+      </Box>
+      
+      {/* Description text in stylized container - refined box */}
+      <Box
+        className="cosmic-shine"
+        sx={{
+          position: "relative",
+          mb: 2.5,
+          ml: "5%",
+          mr: "15%",
+          p: 1.5,
+          pt: 2,
+          borderRadius: "8px",
+          background: "linear-gradient(180deg, rgba(17, 29, 39, 0.8), rgba(17, 29, 39, 0.5))",
+          border: "1px solid rgba(66, 135, 255, 0.3)",
+          backdropFilter: "blur(5px)",
+          zIndex: 1,
+          width: "80%",
+          overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "4px",
+            background: "linear-gradient(90deg, transparent, rgba(100, 243, 213, 0.4), transparent)",
+            opacity: 0.8,
+            pointerEvents: "none"
+          }
+        }}
+      >
+        {/* Icon decoration */}
+        <Box 
+          sx={{ 
+            position: "relative",
+            width: "16px", 
+            height: "16px", 
+            ml: 1,
+            mr: "auto",
+            mb: 1,
+            opacity: 0.7,
+            overflow: "hidden"
+          }}
+        >
+          <Box 
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "12px",
+              height: "12px",
+              background: "linear-gradient(135deg, #64f3d5, #4287ff)",
+              borderRadius: "3px",
+              transform: "translate(-50%, -50%) rotate(45deg)",
+              boxShadow: "0 0 8px rgba(100, 243, 213, 0.5)"
+            }}
+            className="pulse"
+          />
+        </Box>
+        
+        {/* Divider dots */}
+        <Box sx={{ 
+          display: "flex", 
+          justifyContent: "flex-start", 
+          mb: 1.2,
+          mt: 0.2,
+          ml: 1
+        }}>
+          {[0, 1, 2].map((i) => (
+            <Box 
+              key={i} 
+              sx={{ 
+                width: "3px", 
+                height: "3px", 
+                borderRadius: "50%", 
+                backgroundColor: "#64f3d5", 
+                mr: 0.7,
+                opacity: 0.8
+              }} 
+            />
+          ))}
+        </Box>
+
+        <Typography sx={{ 
+          fontFamily: "Work Sans, sans-serif", 
+          textAlign: "left",
+          fontSize: "0.78rem", 
+          letterSpacing: "0.4px",
+          lineHeight: 1.5,
+          pl: 1,
+          pr: 1.5,
+          pb: 0.5,
+          color: "rgba(255, 255, 255, 0.9)",
+          "& span": {
+            color: "#64f3d5",
+            fontWeight: 500
+          }
+        }}>
+          Explore the universe of <span>knowledge</span> through this cosmic interface. Your queries traverse <span>galaxies</span> to reach our AI constellation.
+        </Typography>
+      </Box>
+      
+      {/* Divider before action button */}
+      <Box
+        sx={{
+          width: "60%",
+          height: "1px",
+          background: "linear-gradient(to right, rgba(225, 66, 255, 0.3), transparent)",
+          mb: 2,
+          mt: "auto",
+          ml: "5%",
+          mr: "35%",
+          opacity: 0.6
+        }}
+      />
+      
+      {/* Action button section - refined button */}
+      <Box sx={{ display: "flex", justifyContent: "flex-start", zIndex: 1, mb: 1.5, pl: "5%" }}>
+        <Button
+          onClick={handleDeleteChats}
+          className="nebula-glow cosmic-shine"
+          startIcon={<FiTrash2 style={{ fontSize: "1.1rem" }} />}
+          sx={{
+            px: 3,
+            py: 0.8,
+            color: "white",
+            fontWeight: "600",
+            borderRadius: "20px",
+            background: "linear-gradient(45deg, rgba(225, 66, 255, 0.2), rgba(175, 66, 225, 0.3))",
+            border: "1px solid rgba(225, 66, 255, 0.5)",
+            fontFamily: "Orbitron, sans-serif",
+            letterSpacing: "1px",
+            fontSize: "0.75rem",
+            transition: "all 0.3s ease",
+            position: "relative",
+            overflow: "hidden",
+            "&:hover": {
+              background: "linear-gradient(45deg, rgba(225, 66, 255, 0.4), rgba(175, 66, 225, 0.5))",
+              transform: "translateY(-3px)",
+              boxShadow: "0 5px 15px rgba(225, 66, 255, 0.4)"
+            },
+            "&:active": {
+              transform: "translateY(-1px)",
+              boxShadow: "0 2px 8px rgba(225, 66, 255, 0.5)"
+            }
+          }}
+        >
+          CLEAR HISTORY
+        </Button>
+      </Box>
+
+      {/* Version indicator */}
+      <Typography
+        sx={{
+          textAlign: "left",
+          fontSize: "0.65rem",
+          color: "rgba(255,255,255,0.4)",
+          fontFamily: "Orbitron, sans-serif",
+          letterSpacing: "1px",
+          mt: 0.5,
+          pl: "5%"
+        }}
+      >
+        COSMIC OS v1.0.1
+        </Typography>
+    </Box>
+  );
+
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ pb: 6 }}>
       <Box
         sx={{
           display: "flex",
@@ -136,119 +555,74 @@ const Chat = () => {
           position: "relative",
         }}
       >
-        {/* Left Sidebar */}
-        <Box
-          className="cosmic-card"
-          sx={{
-            display: { md: "flex", xs: "none", sm: "none" },
-            flex: 0.2,
-            flexDirection: "column",
-          }}
-        >
+        {/* Left Sidebar - Desktop Version */}
+        {!isMobile && (
           <Box
+            className="cosmic-card"
             sx={{
-              display: "flex",
-              width: "100%",
-              height: "60vh",
-              borderRadius: 5,
+              display: { md: "flex", xs: "none", sm: "none" },
+              flex: 0.2,
               flexDirection: "column",
-              p: 3,
-              position: "relative",
-              overflow: "hidden",
             }}
           >
-            {/* Animated mini stars in the background */}
-            {renderStars()}
-            
-            {/* Profile avatar with cosmic glow */}
-            <Box 
-              sx={{
-                position: "relative",
-                width: "80px",
-                height: "80px",
-                margin: "0 auto 15px",
-              }}
-              className="cosmic-glow"
-            >
-              <Avatar
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  mx: "auto",
-                  bgcolor: "rgba(100, 243, 213, 0.8)",
-                  color: "black",
-                  fontWeight: 700,
-                  fontSize: "1.5rem",
-                  fontFamily: "Orbitron, sans-serif",
-                  border: "2px solid rgba(66, 135, 255, 0.6)",
-                }}
-              >
-                {auth?.user?.name[0]}
-                {auth?.user?.name.split(" ")[1] ? auth?.user?.name.split(" ")[1][0] : ""}
-              </Avatar>
-            </Box>
-            
-            <Typography 
-              variant="h6" 
-              sx={{ 
-                mx: "auto", 
-                fontFamily: "Orbitron, sans-serif",
-                mb: 2,
-                letterSpacing: 1
-              }}
-              className="cosmic-text"
-            >
-              COSMIC DIALOGUE
-            </Typography>
-            
-            {/* AI model chip */}
-            <Chip 
-              label="OMNISCIENT AI" 
-              sx={{
-                mx: "auto",
-                mb: 3,
-                backgroundColor: "rgba(66, 135, 255, 0.2)",
-                border: "1px solid rgba(66, 135, 255, 0.5)",
-                color: "#64f3d5",
-                fontFamily: "Orbitron, sans-serif",
-                letterSpacing: 1,
-                fontSize: "0.7rem"
-              }}
-            />
-            
-            <Typography sx={{ mx: "auto", fontFamily: "Work Sans", textAlign: "center", mb: 4, p: 1, fontSize: "0.9rem", letterSpacing: "0.5px" }}>
-              Explore the universe of knowledge through this cosmic interface. Your queries traverse galaxies to reach our AI constellation.
-            </Typography>
-            
-            <Box sx={{ mt: "auto", display: "flex", justifyContent: "center" }}>
-              <Button
-                onClick={handleDeleteChats}
-                className="nebula-glow"
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  my: "auto",
-                  color: "white",
-                  fontWeight: "500",
-                  borderRadius: "30px",
-                  mx: "auto",
-                  background: "rgba(225, 66, 255, 0.2)",
-                  border: "1px solid rgba(225, 66, 255, 0.5)",
-                  fontFamily: "Orbitron, sans-serif",
-                  letterSpacing: "1px",
-                  fontSize: "0.8rem",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    background: "rgba(225, 66, 255, 0.4)",
-                    transform: "translateY(-3px)"
-                  },
-                }}
-              >
-                CLEAR HISTORY
-              </Button>
-            </Box>
+            {sidebarContent}
           </Box>
-        </Box>
+        )}
+        
+        {/* Drawer for Mobile */}
+        {isMobile && (
+          <Drawer
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            anchor="left"
+            PaperProps={{
+              sx: {
+                width: "85%",
+                maxWidth: "320px",
+                backgroundColor: "rgba(17, 29, 39, 0.95)",
+                backdropFilter: "blur(10px)",
+                border: "none"
+              }
+            }}
+          >
+            <Box 
+              sx={{ 
+                display: "flex", 
+                flex: 1, 
+                flexDirection: "column", 
+                height: "100%",
+                borderRight: "1px solid rgba(100, 243, 213, 0.2)",
+                position: "relative"
+              }}
+            >
+              <IconButton
+                onClick={() => setDrawerOpen(false)}
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                  color: "#64f3d5",
+                  zIndex: 10
+                }}
+              >
+                <Box 
+                  sx={{ 
+                    fontSize: "1.5rem", 
+                    lineHeight: 1, 
+                    width: 24, 
+                    height: 24, 
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  ×
+                </Box>
+              </IconButton>
+              {sidebarContent}
+            </Box>
+          </Drawer>
+        )}
         
         {/* Chat Area */}
         <Box
@@ -256,43 +630,54 @@ const Chat = () => {
             display: "flex",
             flex: { md: 0.8, xs: 1, sm: 1 },
             flexDirection: "column",
-            px: 3,
+            px: { xs: 1, sm: 2, md: 3 },
           }}
         >
-          <Typography
-            className="cosmic-text"
-            sx={{
-              fontSize: "2rem",
-              mb: 2,
-              mx: "auto",
-              fontWeight: "800",
-              fontFamily: "Orbitron, sans-serif",
-              letterSpacing: "3px",
-              position: "relative"
-            }}
-          >
-            COSMIC AI EXPLORER
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}>
+            {isMobile && (
+              <IconButton 
+                onClick={() => setDrawerOpen(true)}
+                className="cosmic-glow"
+                sx={{ color: "#64f3d5" }}
+              >
+                <FiMenu />
+              </IconButton>
+            )}
+            <Typography
+              className="cosmic-text"
+              sx={{
+                fontSize: { xs: "1.3rem", sm: "1.8rem", md: "2rem" },
+                mb: { xs: 1, sm: 2 },
+                mx: "auto",
+                fontWeight: "800",
+                fontFamily: "Orbitron, sans-serif",
+                letterSpacing: { xs: "2px", md: "3px" },
+                position: "relative"
+              }}
+            >
+              COSMIC AI EXPLORER
+            </Typography>
+          </Box>
           
           {/* Messages container */}
           <Box
             ref={chatContainerRef}
             className="cosmic-card"
-            sx={{
-              width: "100%",
-              height: "60vh",
-              borderRadius: 3,
-              mx: "auto",
-              display: "flex",
-              flexDirection: "column",
+          sx={{
+            width: "100%",
+            height: "60vh",
+            borderRadius: 3,
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
               overflow: "auto",
-              p: 2,
+              p: { xs: 1, sm: 2 },
               position: "relative"
-            }}
-          >
-            {chatMessages.map((chat, index) => (
-              <ChatItem content={chat.content} role={chat.role} key={index} />
-            ))}
+          }}
+        >
+          {chatMessages.map((chat, index) => (
+            <ChatItem content={chat.content} role={chat.role} key={index} />
+          ))}
             
             {isLoading && (
               <Box sx={{ display: "flex", alignItems: "center", p: 2 }}>
@@ -322,14 +707,14 @@ const Chat = () => {
                   flexDirection: "column",
                   height: "100%",
                   textAlign: "center",
-                  p: 3
+                  p: { xs: 2, sm: 3 }
                 }}
               >
                 <Box 
                   className="cosmic-glow pulse"
                   sx={{
-                    width: "120px",
-                    height: "120px",
+                    width: { xs: "80px", sm: "100px", md: "120px" },
+                    height: { xs: "80px", sm: "100px", md: "120px" },
                     borderRadius: "50%",
                     background: "linear-gradient(45deg, rgba(66, 135, 255, 0.2), rgba(100, 243, 213, 0.2))",
                     display: "flex",
@@ -341,7 +726,7 @@ const Chat = () => {
                   <img 
                     src="robot.png" 
                     alt="AI" 
-                    style={{ width: "70px", height: "70px" }}
+                    style={{ width: "70%", height: "70%" }}
                   />
                 </Box>
                 <Typography 
@@ -349,46 +734,46 @@ const Chat = () => {
                   sx={{ 
                     fontFamily: "Orbitron, sans-serif",
                     fontWeight: 700,
-                    fontSize: "1.2rem",
+                    fontSize: { xs: "1rem", sm: "1.2rem" },
                     mb: 2
                   }}
                 >
                   BEGIN COSMIC DIALOGUE
                 </Typography>
-                <Typography sx={{ color: "rgba(255,255,255,0.7)", maxWidth: "500px" }}>
+                <Typography sx={{ color: "rgba(255,255,255,0.7)", maxWidth: "500px", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
                   Your adventure through the cosmos of knowledge starts with a simple message. What would you like to explore today?
                 </Typography>
               </Box>
             )}
-          </Box>
+        </Box>
           
           {/* Input area */}
           <Box
             className="cosmic-card"
             sx={{
-              width: "100%",
+            width: "100%",
               borderRadius: 3,
               mt: 3,
-              p: 1,
-              display: "flex",
+              p: { xs: 0.5, sm: 1 },
+            display: "flex",
               alignItems: "center",
               position: "relative",
               overflow: "hidden",
-            }}
-          >
-            <input
-              ref={inputRef}
-              type="text"
+          }}
+        >
+          <input
+            ref={inputRef}
+            type="text"
               placeholder="Type your message to the cosmos..."
               className="cosmic-input"
               onKeyDown={handleKeyDown}
-              style={{
-                width: "100%",
-                padding: "18px 20px",
-                border: "none",
-                outline: "none",
-                color: "white",
-                fontSize: "1rem",
+            style={{
+              width: "100%",
+                padding: isMobile ? "12px 15px" : "18px 20px",
+              border: "none",
+              outline: "none",
+              color: "white",
+                fontSize: isMobile ? "0.9rem" : "1rem",
                 borderRadius: "8px",
                 fontFamily: "Work Sans, sans-serif"
               }}
@@ -410,7 +795,7 @@ const Chat = () => {
                 }}
               >
                 {isLoading ? <CgSpinner className="rotate" /> : <IoMdSend />}
-              </IconButton>
+          </IconButton>
             </Tooltip>
           </Box>
         </Box>

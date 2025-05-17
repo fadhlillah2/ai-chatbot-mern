@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Typography, Button, TextField, Container, Paper } from "@mui/material";
+import { Box, Typography, Button, TextField, Container, Paper, useTheme, useMediaQuery } from "@mui/material";
 import { IoMdLogIn } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,8 @@ import CustomizedInput from "../components/shared/CustomizedInput";
 const Login = () => {
   const navigate = useNavigate();
   const auth = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ const Login = () => {
   // Generate random stars for background
   const renderStars = () => {
     const starElements = [];
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < (isMobile ? 40 : 70); i++) {
       const size = Math.random() * 3;
       const top = Math.random() * 100;
       const left = Math.random() * 100;
@@ -69,7 +71,7 @@ const Login = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          mt: 8,
+          mt: isMobile ? 4 : 8,
           position: "relative"
         }}
       >
@@ -78,14 +80,14 @@ const Login = () => {
           className="planet-glow pulse"
           sx={{
             position: "absolute",
-            width: "180px",
-            height: "180px",
+            width: isMobile ? "120px" : "180px",
+            height: isMobile ? "120px" : "180px",
             borderRadius: "50%",
             background: "radial-gradient(circle at 30% 30%, #1a4999, #090a0f)",
             opacity: 0.15,
             zIndex: -1,
-            top: "-100px",
-            right: "-50px",
+            top: isMobile ? "-60px" : "-100px",
+            right: isMobile ? "-30px" : "-50px",
           }}
         />
         
@@ -95,7 +97,7 @@ const Login = () => {
           component="form"
           onSubmit={handleSubmit}
           sx={{ 
-            p: 5, 
+            p: isMobile ? 3 : 5, 
             width: "100%",
             position: "relative",
             overflow: "hidden",
@@ -108,7 +110,7 @@ const Login = () => {
           <Box 
             sx={{ 
               textAlign: "center",
-              mb: 4,
+              mb: isMobile ? 2 : 4,
               position: "relative",
               zIndex: 1
             }}
@@ -120,7 +122,8 @@ const Login = () => {
                 mb: 1.5,
                 fontFamily: "Orbitron, sans-serif",
                 fontWeight: "800",
-                letterSpacing: 2
+                letterSpacing: 2,
+                fontSize: isMobile ? "1.8rem" : "2.125rem"
               }}
             >
               COSMIC LOGIN
@@ -129,7 +132,8 @@ const Login = () => {
               variant="body1"
               sx={{ 
                 color: "rgba(255, 255, 255, 0.7)",
-                fontFamily: "Work Sans, sans-serif"
+                fontFamily: "Work Sans, sans-serif",
+                fontSize: isMobile ? "0.9rem" : "1rem"
               }}
             >
               Initiate sequence to access your intergalactic dashboard
@@ -167,7 +171,7 @@ const Login = () => {
               background: "linear-gradient(90deg, rgba(66, 135, 255, 0.8), rgba(100, 243, 213, 0.8))",
               color: "white",
               fontWeight: "600",
-              fontSize: "1rem",
+              fontSize: isMobile ? "0.9rem" : "1rem",
               borderRadius: "30px",
               fontFamily: "Orbitron, sans-serif",
               letterSpacing: 1,

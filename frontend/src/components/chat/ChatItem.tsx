@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Avatar, Typography, Paper } from "@mui/material";
+import { Box, Avatar, Typography, Paper, useMediaQuery, useTheme } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -36,24 +36,26 @@ const ChatItem = ({
 }) => {
   const messageBlocks = extractCodeFromString(content);
   const auth = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   
   return role == "assistant" ? (
     <Box
       sx={{
         display: "flex",
-        p: 2,
-        gap: 2,
+        p: isMobile ? 1 : 2,
+        gap: isMobile ? 1 : 2,
         borderRadius: 2,
         my: 1,
-        maxWidth: "85%",
+        maxWidth: isMobile ? "95%" : "85%",
         position: "relative"
       }}
     >
       {/* AI Avatar with cosmic glow */}
       <Box className="cosmic-glow" sx={{ 
         borderRadius: "50%", 
-        width: 42, 
-        height: 42,
+        width: isMobile ? 36 : 42, 
+        height: isMobile ? 36 : 42,
         flexShrink: 0
       }}>
         <Avatar sx={{ 
@@ -62,7 +64,7 @@ const ChatItem = ({
           backgroundColor: "rgba(100, 243, 213, 0.2)",
           border: "1px solid rgba(100, 243, 213, 0.5)" 
         }}>
-          <img src="openai.png" alt="AI" width={"30px"} className="image-inverted" />
+          <img src="openai.png" alt="AI" width={isMobile ? "24px" : "30px"} className="image-inverted" />
         </Avatar>
       </Box>
       
@@ -71,7 +73,7 @@ const ChatItem = ({
         elevation={0}
         className="cosmic-card"
         sx={{
-          p: 2,
+          p: isMobile ? 1.5 : 2,
           position: "relative",
           background: "rgba(17, 29, 39, 0.6)",
           border: "1px solid rgba(100, 243, 213, 0.3)",
@@ -94,7 +96,7 @@ const ChatItem = ({
         
         <Box sx={{ pl: 1 }}>
           {!messageBlocks && (
-            <Typography sx={{ fontSize: "16px", lineHeight: 1.6, color: "#eee" }}>{content}</Typography>
+            <Typography sx={{ fontSize: isMobile ? "14px" : "16px", lineHeight: 1.6, color: "#eee" }}>{content}</Typography>
           )}
           {messageBlocks &&
             messageBlocks.length &&
@@ -103,16 +105,24 @@ const ChatItem = ({
                 <Box key={index} sx={{ 
                   borderRadius: "8px", 
                   overflow: "hidden", 
-                  my: 2,
+                  my: isMobile ? 1 : 2,
                   boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
-                  border: "1px solid rgba(66, 135, 255, 0.3)"
+                  border: "1px solid rgba(66, 135, 255, 0.3)",
+                  fontSize: isMobile ? "12px" : "14px"
                 }}>
-                  <SyntaxHighlighter style={coldarkDark} language="javascript">
+                  <SyntaxHighlighter 
+                    style={coldarkDark} 
+                    language="javascript"
+                    customStyle={{ 
+                      fontSize: isMobile ? "12px" : "14px",
+                      padding: isMobile ? "0.8rem" : "1rem"  
+                    }}
+                  >
                     {block}
                   </SyntaxHighlighter>
                 </Box>
               ) : (
-                <Typography key={index} sx={{ fontSize: "16px", lineHeight: 1.6, color: "#eee", mb: 1 }}>{block}</Typography>
+                <Typography key={index} sx={{ fontSize: isMobile ? "14px" : "16px", lineHeight: 1.6, color: "#eee", mb: 1 }}>{block}</Typography>
               )
             )}
         </Box>
@@ -122,11 +132,11 @@ const ChatItem = ({
     <Box
       sx={{
         display: "flex",
-        p: 2,
-        gap: 2,
+        p: isMobile ? 1 : 2,
+        gap: isMobile ? 1 : 2,
         borderRadius: 2,
         my: 1,
-        maxWidth: "85%",
+        maxWidth: isMobile ? "95%" : "85%",
         marginLeft: "auto",
         flexDirection: "row-reverse",
         position: "relative"
@@ -135,8 +145,8 @@ const ChatItem = ({
       {/* User Avatar */}
       <Box className="nebula-glow" sx={{ 
         borderRadius: "50%", 
-        width: 42, 
-        height: 42,
+        width: isMobile ? 36 : 42, 
+        height: isMobile ? 36 : 42,
         flexShrink: 0
       }}>
         <Avatar sx={{ 
@@ -157,7 +167,7 @@ const ChatItem = ({
         elevation={0}
         className="cosmic-card"
         sx={{
-          p: 2,
+          p: isMobile ? 1.5 : 2,
           position: "relative",
           background: "rgba(30, 20, 60, 0.6)",
           border: "1px solid rgba(225, 66, 255, 0.3)",
@@ -180,7 +190,7 @@ const ChatItem = ({
         
         <Box sx={{ pr: 1 }}>
           {!messageBlocks && (
-            <Typography sx={{ fontSize: "16px", lineHeight: 1.6, color: "#eee" }}>{content}</Typography>
+            <Typography sx={{ fontSize: isMobile ? "14px" : "16px", lineHeight: 1.6, color: "#eee" }}>{content}</Typography>
           )}
           {messageBlocks &&
             messageBlocks.length &&
@@ -189,16 +199,23 @@ const ChatItem = ({
                 <Box key={index} sx={{ 
                   borderRadius: "8px", 
                   overflow: "hidden", 
-                  my: 2,
+                  my: isMobile ? 1 : 2,
                   boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
                   border: "1px solid rgba(225, 66, 255, 0.3)"
                 }}>
-                  <SyntaxHighlighter style={coldarkDark} language="javascript">
+                  <SyntaxHighlighter 
+                    style={coldarkDark} 
+                    language="javascript"
+                    customStyle={{ 
+                      fontSize: isMobile ? "12px" : "14px",
+                      padding: isMobile ? "0.8rem" : "1rem"  
+                    }}
+                  >
                     {block}
                   </SyntaxHighlighter>
                 </Box>
               ) : (
-                <Typography key={index} sx={{ fontSize: "16px", lineHeight: 1.6, color: "#eee", mb: 1 }}>{block}</Typography>
+                <Typography key={index} sx={{ fontSize: isMobile ? "14px" : "16px", lineHeight: 1.6, color: "#eee", mb: 1 }}>{block}</Typography>
               )
             )}
         </Box>

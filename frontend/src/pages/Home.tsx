@@ -184,8 +184,8 @@ const Home = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: { md: "row", xs: "column", sm: "column" },
-            gap: 5,
-            my: 10,
+            gap: { xs: 3, md: 5 },
+            my: { xs: 6, md: 10 },
           }}
         >
           <Box className="cosmic-card pulse" sx={{
@@ -195,8 +195,8 @@ const Home = () => {
             width: { xs: "90%", md: "30%" },
           }}>
             <Box className="cosmic-glow" sx={{
-              width: "100px",
-              height: "100px",
+              width: { xs: "80px", sm: "100px" },
+              height: { xs: "80px", sm: "100px" },
               borderRadius: "50%",
               background: "linear-gradient(45deg, #4287ff, #64f3d5)",
               display: "flex",
@@ -207,19 +207,19 @@ const Home = () => {
             }}>
               <Box className="rotate" sx={{
                 position: "absolute",
-                width: "120px",
-                height: "120px",
+                width: { xs: "100px", sm: "120px" },
+                height: { xs: "100px", sm: "120px" },
                 border: "1px solid rgba(100, 243, 213, 0.5)",
                 borderRadius: "50%",
               }}></Box>
               <img
                 src="robot.png"
                 alt="Advanced AI"
-                style={{ width: "60px", height: "60px" }}
+                style={{ width: "60%", height: "60%" }}
               />
             </Box>
-            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif" }}>Advanced Intelligence</Typography>
-            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)" }}>
+            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Advanced Intelligence</Typography>
+            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
               Powered by cutting-edge AI models from across the galaxy
             </Typography>
           </Box>
@@ -231,8 +231,8 @@ const Home = () => {
             width: { xs: "90%", md: "30%" },
           }}>
             <Box className="nebula-glow" sx={{
-              width: "100px",
-              height: "100px",
+              width: { xs: "80px", sm: "100px" },
+              height: { xs: "80px", sm: "100px" },
               borderRadius: "50%",
               background: "linear-gradient(45deg, #e142ff, #ff4b4b)",
               display: "flex",
@@ -243,20 +243,20 @@ const Home = () => {
             }}>
               <Box className="rotate" sx={{
                 position: "absolute",
-                width: "120px",
-                height: "120px",
+                width: { xs: "100px", sm: "120px" },
+                height: { xs: "100px", sm: "120px" },
                 border: "1px solid rgba(225, 66, 255, 0.5)",
                 borderRadius: "50%",
               }}></Box>
               <img
                 src="openai.png"
                 alt="openai"
-                style={{ width: "60px" }}
+                style={{ width: "60%" }}
                 className="image-inverted"
               />
             </Box>
-            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif" }}>Multiple Models</Typography>
-            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)" }}>
+            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Multiple Models</Typography>
+            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
               Choose from various AI models to suit your interstellar needs
             </Typography>
           </Box>
@@ -268,8 +268,8 @@ const Home = () => {
             width: { xs: "90%", md: "30%" },
           }}>
             <Box className="planet-glow" sx={{
-              width: "100px",
-              height: "100px",
+              width: { xs: "80px", sm: "100px" },
+              height: { xs: "80px", sm: "100px" },
               borderRadius: "50%",
               background: "linear-gradient(45deg, #4287ff, #0426ab)",
               display: "flex",
@@ -280,19 +280,19 @@ const Home = () => {
             }}>
               <Box className="rotate" sx={{
                 position: "absolute",
-                width: "120px",
-                height: "120px",
+                width: { xs: "100px", sm: "120px" },
+                height: { xs: "100px", sm: "120px" },
                 border: "1px solid rgba(66, 135, 255, 0.5)",
                 borderRadius: "50%",
               }}></Box>
               <img
                 src="chat.png"
                 alt="Secure Chat"
-                style={{ width: "60px", borderRadius: "10px" }}
+                style={{ width: "60%", borderRadius: "10px" }}
               />
             </Box>
-            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif" }}>Secure Conversations</Typography>
-            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)" }}>
+            <Typography variant="h5" sx={{ mb: 1, fontFamily: "Orbitron, sans-serif", fontSize: { xs: "1.2rem", sm: "1.5rem" } }}>Secure Conversations</Typography>
+            <Typography variant="body1" sx={{ color: "rgba(255, 255, 255, 0.8)", fontSize: { xs: "0.9rem", sm: "1rem" } }}>
               Encrypted transmissions keep your cosmic conversations private
             </Typography>
           </Box>

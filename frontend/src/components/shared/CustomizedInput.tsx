@@ -1,5 +1,6 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 type Props = {
   name: string;
@@ -9,6 +10,9 @@ type Props = {
 };
 
 const CustomizedInput = (props: Props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  
   return (
     <TextField
       margin="normal"
@@ -21,13 +25,14 @@ const CustomizedInput = (props: Props) => {
       InputLabelProps={{ 
         style: { 
           color: "#64f3d5",
-          fontFamily: "Work Sans, sans-serif"
+          fontFamily: "Work Sans, sans-serif",
+          fontSize: isMobile ? "0.9rem" : "1rem"
         } 
       }}
       InputProps={{
         style: {
           borderRadius: 10,
-          fontSize: 16,
+          fontSize: isMobile ? 14 : 16,
           color: "white",
           fontFamily: "Work Sans, sans-serif",
           letterSpacing: "0.5px",
@@ -53,4 +58,4 @@ const CustomizedInput = (props: Props) => {
   );
 };
 
-export default CustomizedInput;
+export default CustomizedInput; 
